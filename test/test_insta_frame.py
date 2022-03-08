@@ -9,7 +9,7 @@ from insta_frame.lib import add_frame, is_image
 
 
 def test_add_frame() -> None:
-    image = cv2.imread("./resources/linientreu.jpg")
+    image = cv2.imread(str(Path(__file__).parent / "__fixtures__/cat.jpg"))
 
     image_ut = add_frame(image)
 
@@ -29,37 +29,36 @@ def test_is_image() -> None:
     assert not is_image("linientreu")
 
 
-def test_screenshot(tmp_path: Path) -> None:
-    image = cv2.imread("./resources/linientreu.jpg")
+def test_snapshot(tmp_path: Path) -> None:
+    image = cv2.imread(str(Path(__file__).parent / "__fixtures__/cat.jpeg"))
 
     sut = add_frame(image)
 
-    assert_screenshot(sut, f"{__name__}_0", tmp_path)
+    name = __name__.rsplit(".", 1)[-1]
+
+    assert_snapshot(sut, f"{name}_0", tmp_path)
 
 
-def assert_screenshot(data, name: str, tmp_path: Path) -> None:
-    _screenshots = Path(__file__).parent.joinpath("__screenshots__")
-    if not _screenshots.exists():
-        _screenshots.mkdir()
-    screenshot = _screenshots.joinpath(f"{name}.jpeg")
+def assert_snapshot(data, name: str, tmp_path: Path) -> None:
+    _snapshots = Path(__file__).parent / "__snapshots__"
+    if not _snapshots.exists():
+        _snapshots.mkdir()
+    snapshot = _snapshots.joinpath(f"{name}.jpeg")
 
-    if not screenshot.exists():
-        print(screenshot)
-        cv2.imwrite(str(screenshot), data)
-        assert (
-            False
-        ), "No screenshot available, created new screenshot. Please run again!"
+    if not snapshot.exists():
+        cv2.imwrite(str(snapshot), data)
+        assert False, "No snapshot available, created new snapshot. Please run again!"
 
-    screenshot_data = cv2.imread(str(screenshot))
+    snapshot_data = cv2.imread(str(snapshot))
     sut_path = tmp_path.joinpath("sut.jpeg")
     cv2.imwrite(str(sut_path), data)
     sut_jpeg = cv2.imread(str(sut_path))
 
-    if not numpy.array_equal(screenshot_data, sut_jpeg):
+    if not numpy.array_equal(snapshot_data, sut_jpeg):
         diff = tmp_path.joinpath(f"{name}_diff.jpeg")
-        cv2.imwrite(str(diff), screenshot_data - data)
+        cv2.imwrite(str(diff), snapshot_data - data)
         assert False, (
-            "Screenshots did not match!\n"
+            "snapshots did not match!\n"
             f"Call \n`open {diff}`\nto see diff.\n"
             f"Call \n`open {sut_path}`\n to see output.\n"
         )
