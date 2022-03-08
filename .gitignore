@@ -150,3 +150,5 @@ resources/settings.ini
 
 # ignore vscode tmp
 ~/
+
+poetry

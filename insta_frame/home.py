@@ -1,49 +1,32 @@
-"""Add a frame to any photo so it has format 1:1."""
+"""Home View."""
 
 import os
-import shutil
-import tempfile
 import typing
 
 import cv2
 from flask import (
-    Flask,
-    appcontext_tearing_down,
+    Blueprint,
+    current_app,
     flash,
     redirect,
     request,
     send_from_directory,
     url_for,
 )
-from lib import add_frame, is_image
 from werkzeug.utils import secure_filename
 from werkzeug.wrappers.response import Response
 
-from insta_frame.lib import string_data_to_image
+from insta_frame.lib import add_frame, is_image, string_data_to_image
 
-app = Flask(__name__)
-app.env = "development"
-app.secret_key = "super secret key"
-temp = tempfile.mkdtemp()
-app.config["UPLOAD_FOLDER"] = temp
+bp = Blueprint("home", __name__)
 
 
-def remove_temp_directory(*args, **extra) -> None:
-    shutil.rmtree(temp)
-    return
+@bp.route("/<name>")
+def download_file(name) -> Response:
+    return send_from_directory(current_app.config["UPLOAD_FOLDER"], name)
 
 
-appcontext_tearing_down.connect(remove_temp_directory)
-
-
-@app.route("/<name>")
-def download_file(name):
-    print(name)
-    print(app.config["UPLOAD_FOLDER"])
-    return send_from_directory(app.config["UPLOAD_FOLDER"], name)
-
-
-@app.route("/", methods=["GET", "POST"])
+@bp.route("/", methods=["GET", "POST"])
 def home_route() -> typing.Union[str, Response]:
     name = "file"
 
@@ -68,9 +51,10 @@ def home_route() -> typing.Union[str, Response]:
             image_with_frame = add_frame(image)
             filename = secure_filename(filename)
             cv2.imwrite(
-                os.path.join(app.config["UPLOAD_FOLDER"], filename), image_with_frame
+                os.path.join(current_app.config["UPLOAD_FOLDER"], filename),
+                image_with_frame,
             )
-            return redirect(url_for("download_file", name=filename))
+            return redirect(url_for("home.download_file", name=filename))
 
         return redirect(request.url)
 
