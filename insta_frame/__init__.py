@@ -10,7 +10,7 @@ from flask import Flask, appcontext_tearing_down
 
 
 def clean_up_temp(temp: str, *args, **kwargs) -> None:
-    shutil.rmtree(temp)
+    shutil.rmtree(temp, ignore_errors=True)
     return
 
 

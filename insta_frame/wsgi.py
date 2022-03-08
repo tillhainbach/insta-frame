@@ -5,6 +5,8 @@ import tempfile
 
 from flask import Flask, appcontext_tearing_down
 
+from . import home
+
 # application = create_app()
 
 application = Flask(__name__)
@@ -22,6 +24,10 @@ def _cleanup(*args, **kwargs):
 appcontext_tearing_down.connect(_cleanup)
 
 
-@application.route("/")
-def hello_world():
-    return "Hello World!"
+application.register_blueprint(home.bp)
+application.add_url_rule("/", endpoint="index")
+
+
+# @application.route("/")
+# def hello_world():
+#     return "Hello World!"
