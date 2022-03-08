@@ -23,7 +23,10 @@ bp = Blueprint("home", __name__)
 
 @bp.route("/<name>")
 def download_file(name) -> Response:
-    return send_from_directory(current_app.config["UPLOAD_FOLDER"], name)
+    temp = current_app.config["UPLOAD_FOLDER"]
+    current_app.logger.info(f"Storing files to: {temp}")
+
+    return send_from_directory(temp, name)
 
 
 @bp.route("/", methods=["GET", "POST"])
