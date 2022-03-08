@@ -15,7 +15,7 @@ application.config["UPLOAD_FOLDER"] = temp
 
 
 def _cleanup(*args, **kwargs):
-    shutil.rmtree(temp)
+    shutil.rmtree(temp, ignore_errors=True)
     return
 
 
