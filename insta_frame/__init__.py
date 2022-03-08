@@ -34,6 +34,7 @@ def create_app(test_config: Optional[Mapping[str, Any]] = None) -> Flask:
     temp = tempfile.mkdtemp()
     app.config["UPLOAD_FOLDER"] = temp
 
+    app.logger.info(f"Storing files to: {temp}")
     appcontext_tearing_down.connect(partial(clean_up_temp, temp))
 
     from . import home
