@@ -12,8 +12,8 @@ def is_image(filename: str) -> bool:
     return "." in filename and filename.rsplit(".", 1)[-1].lower() in ("jpeg", "jpg")
 
 
-def string_data_to_image(data: str) -> Image:
-    data_array = np.fromstring(data, dtype=np.uint8, sep="")
+def string_data_to_image(data: bytes) -> Image:
+    data_array = np.frombuffer(data, dtype=np.uint8)
     return cv2.imdecode(data_array, cv2.IMREAD_UNCHANGED)
 
 

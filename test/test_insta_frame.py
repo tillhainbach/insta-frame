@@ -63,4 +63,7 @@ def assert_snapshot(data, name: str, tmp_path: Path) -> None:
             f"Call \n`open {sut_path}`\n to see output.\n"
         )
 
+    a = TypeError("test")
+    a.args
+
     assert True

@@ -9,6 +9,7 @@ from flask import (
     current_app,
     flash,
     redirect,
+    render_template,
     request,
     send_from_directory,
     url_for,
@@ -49,7 +50,7 @@ def home_route() -> typing.Union[str, Response]:
         if file and is_image(filename):
             flash("Received file!")
             # read image file string data
-            image_data = request.files[name].read()
+            image_data = file.read()
             image = string_data_to_image(image_data)
             image_with_frame = add_frame(image)
             filename = secure_filename(filename)
@@ -61,12 +62,4 @@ def home_route() -> typing.Union[str, Response]:
 
         return redirect(request.url)
 
-    return """\
-    <!doctype html>
-    <title>Upload new File</title>
-    <h1>Upload new File</h1>
-    <form method=post enctype=multipart/form-data>
-      <input type=file name=file>
-      <input type=submit value=Upload>
-    </form>
-"""
+    return render_template("index.html")
