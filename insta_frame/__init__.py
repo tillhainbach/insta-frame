@@ -1,21 +1,13 @@
 """Bootstrap Flask app instance."""
 
 import os
-import shutil
-import tempfile
-from functools import partial
 from typing import Any, Mapping, Optional
 
-from flask import Flask, appcontext_tearing_down
+from quart import Quart
 
 
-def clean_up_temp(temp: str, *args, **kwargs) -> None:
-    shutil.rmtree(temp, ignore_errors=True)
-    return
-
-
-def create_app(test_config: Optional[Mapping[str, Any]] = None) -> Flask:
-    app = Flask(__name__, instance_relative_config=True)
+def create_app(test_config: Optional[Mapping[str, Any]] = None) -> Quart:
+    app = Quart(__name__, instance_relative_config=True)
 
     app.config.from_mapping(SECRET_KEY="dev")
 
@@ -27,15 +19,10 @@ def create_app(test_config: Optional[Mapping[str, Any]] = None) -> Flask:
 
     # ensure instance folder exists
     try:
-        os.makedirs(app.instance_path)
+        if app.instance_path is not None:
+            os.makedirs(app.instance_path)
     except OSError:
         pass
-
-    temp = tempfile.mkdtemp()
-    app.config["UPLOAD_FOLDER"] = temp
-
-    app.logger.info(f"Storing files to: {temp}")
-    appcontext_tearing_down.connect(partial(clean_up_temp, temp))
 
     from . import home
 

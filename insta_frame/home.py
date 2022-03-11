@@ -3,8 +3,9 @@
 import typing
 
 import cv2
-from flask import Blueprint, flash, jsonify, render_template, request
-from werkzeug.wrappers.response import Response
+from quart import Blueprint, current_app, flash, jsonify, render_template, request
+from quart.wrappers.response import Response
+from werkzeug.datastructures import FileStorage
 
 from insta_frame.lib import add_frame, as_b64, as_url, is_image, string_data_to_image
 
@@ -12,8 +13,9 @@ bp = Blueprint("home", __name__)
 
 
 @bp.route("/?", methods=["POST"])
-def upload_image() -> Response:
-    files = request.files.getlist("file")
+async def upload_image() -> Response:
+    files: list[FileStorage] = (await request.files).getlist("file")
+    current_app.logger.info(files)
     image_type = filter(lambda x: "image" in x.content_type, files)
     try:
         file = next(image_type)
@@ -21,16 +23,16 @@ def upload_image() -> Response:
         file = None
 
     if not file:
-        flash("Uploaded content is not an image!")
+        await flash("Uploaded content is not an image!")
         return jsonify(image=None)
 
     filename = file.filename
     if not filename:
-        flash("No file part!")
+        await flash("No file part!")
         return jsonify(image=None)
 
     if not file or not is_image(filename):
-        flash("Could not recognize uploaded file as an image!")
+        await flash("Could not recognize uploaded file as an image!")
         return jsonify(image=None)
 
     # read image file string data
@@ -42,5 +44,5 @@ def upload_image() -> Response:
 
 
 @bp.route("/", methods=["GET"])
-def home_route() -> typing.Union[str, Response]:
-    return render_template("index.html")
+async def home_route() -> typing.Union[str, Response]:
+    return await render_template("index.html")

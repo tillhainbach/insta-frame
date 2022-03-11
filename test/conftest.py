@@ -1,19 +1,19 @@
 """Backend Test Fixtures."""
 
 import pytest
-from flask import Flask
+from quart import Quart
 
 from insta_frame import create_app
 
 
 @pytest.fixture
-def app() -> Flask:
+def app() -> Quart:
     """Get app in testing mode."""
 
     return create_app({"TESTING": True})
 
 
 @pytest.fixture
-def client(app: Flask):
+def client(app: Quart):
     """Get test client."""
     return app.test_client()
