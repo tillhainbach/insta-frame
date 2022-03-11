@@ -102,6 +102,7 @@ function unhighlight(element) {
 }
 
 function onInputChanged(element) {
+  console.log("input has changed");
   const files = element.files;
   handleFiles(files);
 }
