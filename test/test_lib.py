@@ -30,7 +30,7 @@ def test_is_image() -> None:
 
 
 def test_snapshot(tmp_path: Path) -> None:
-    image = cv2.imread(str(Path(__file__).parent / "__fixtures__/cat.jpeg"))
+    image = cv2.imread(str(Path(__file__).parent / "__fixtures__/cat.jpg"))
 
     sut = add_frame(image)
 

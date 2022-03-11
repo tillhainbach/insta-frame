@@ -68,6 +68,8 @@ body {
 }
 
 /* MARK: - components */
+
+/* after https://css-tricks.com/examples/DragAndDropFileUploading/ */
 .box {
   font-size: 1.25rem; /* 20 */
   background-color: #c8dadf77;
@@ -165,7 +167,7 @@ body {
 }
 
 .restart-button {
-  background-color: #fff;
+  background-color: #c8dadf77;
   margin: 0.25rem;
   padding: 0.5rem;
   text-align: center;
@@ -181,6 +183,7 @@ body {
 .restart-button  > a > svg {
   display: block;
   margin: auto;
+  fill: #92b0b3;
 
 }
 

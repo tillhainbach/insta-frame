@@ -1,3 +1,5 @@
+// after https://www.smashingmagazine.com/2018/01/drag-drop-file-uploader-vanilla-js/
+
 const dropArea = document.getElementById("drop-area");
 
 function checkAvailableDragAndDropAPI() {
