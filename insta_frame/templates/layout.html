@@ -20,9 +20,9 @@
   </head>
   <body>
     {% with messages = get_flashed_messages() %} {% if messages %}
-    <div class="bg-danger p-3">
+    <div class="bg-danger p-3 flashes position-absolute top-0 left-0">
       <h3 class="text-white">Error</h3>
-      <ul class="flashes list-inline text-white">
+      <ul class="list-inline text-white">
         {% for message in messages %}
         <li class="list-inline-item">{{ message }}</li>
         {% endfor %}

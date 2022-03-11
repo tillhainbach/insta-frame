@@ -3,14 +3,7 @@
 import typing
 
 import cv2
-from flask import (
-    Blueprint,
-    current_app,
-    jsonify,
-    make_response,
-    render_template,
-    request,
-)
+from flask import Blueprint, flash, jsonify, render_template, request
 from werkzeug.wrappers.response import Response
 
 from insta_frame.lib import add_frame, as_b64, as_url, is_image, string_data_to_image
@@ -22,17 +15,23 @@ bp = Blueprint("home", __name__)
 def upload_image() -> Response:
     files = request.files.getlist("file")
     image_type = filter(lambda x: "image" in x.content_type, files)
-    file = next(image_type)
-    current_app.logger.info(request.files)
+    try:
+        file = next(image_type)
+    except StopIteration:
+        file = None
+
     if not file:
-        return jsonify(success=False, error="No data was uploaded!")
+        flash("Uploaded content is not an image!")
+        return jsonify(image=None)
 
     filename = file.filename
     if not filename:
-        return make_response("No file part!", 400)
+        flash("No file part!")
+        return jsonify(image=None)
 
     if not file or not is_image(filename):
-        return make_response("No image selected!", 400)
+        flash("Could not recognize uploaded file as an image!")
+        return jsonify(image=None)
 
     # read image file string data
     image_data = file.read()

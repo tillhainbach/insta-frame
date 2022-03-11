@@ -178,6 +178,16 @@ body {
   background-color: #fff;
 }
 
+.flashes {
+  width: 100%;
+  padding-left: 1rem;
+}
+
+.flashes,
+.flashes > * {
+  animation: flash 0.25s ease-in 1s forwards;
+}
+
 .form-text {
   color: #6c757d;
   font-size: 0.875em;
@@ -288,6 +298,17 @@ body {
 @keyframes disappear {
   to {
     opacity: 0;
-    visibility: hidden;
+    display: none;
+  }
+}
+
+@keyframes flash {
+  from {
+    opacity: 1;
+    display: block;
+  }
+  to {
+    opacity: 0;
+    display: none !important;
   }
 }

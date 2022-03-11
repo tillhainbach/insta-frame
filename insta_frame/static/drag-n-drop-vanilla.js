@@ -66,21 +66,22 @@ function uploadFrom(form) {
     formData.append("file", file);
 
     fetch(form.action, { method: "Post", body: formData })
-      .then((value) => onfulfilled(form, value))
+      .then((response) => response.json())
+      .then((data) => onfulfilled(form, data))
       .catch(onrejected);
   };
 }
 
 const upload = uploadFrom(dropArea);
 
-function onfulfilled(form, response) {
-  response.json().then((data) => {
-    if (data.image) {
-      setImage(data.image, "image with 1:1 aspect ratio");
-      form.classList.remove("is-uploading");
-      form.classList.add("is-success");
-    }
-  });
+function onfulfilled(form, data) {
+  if (data.image) {
+    setImage(data.image, "image with 1:1 aspect ratio");
+    form.classList.remove("is-uploading");
+    form.classList.add("is-success");
+  } else {
+    window.location.href = form.action.replace("%3F", "");
+  }
 }
 
 function onrejected(reason) {
@@ -116,6 +117,5 @@ function setImage(src, alt) {
   const imageElement = document.getElementById("image");
   imageElement.src = src;
   alt && (imageElement.alt = alt);
-  console.log(imageElement);
   imageElement.classList.remove("placeholder-img");
 }
