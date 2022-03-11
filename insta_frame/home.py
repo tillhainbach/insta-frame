@@ -8,6 +8,8 @@ from flask import (
     Blueprint,
     current_app,
     flash,
+    jsonify,
+    make_response,
     redirect,
     render_template,
     request,
@@ -17,9 +19,33 @@ from flask import (
 from werkzeug.utils import secure_filename
 from werkzeug.wrappers.response import Response
 
-from insta_frame.lib import add_frame, is_image, string_data_to_image
+from insta_frame.lib import add_frame, as_b64, as_url, is_image, string_data_to_image
 
 bp = Blueprint("home", __name__)
+
+
+@bp.route("/?", methods=["POST"])
+def upload_image() -> Response:
+    files = request.files.getlist("file")
+    image_type = filter(lambda x: "image" in x.content_type, files)
+    file = next(image_type)
+    current_app.logger.info(request.files)
+    if not file:
+        return jsonify(success=False, error="No data was uploaded!")
+
+    filename = file.filename
+    if not filename:
+        return make_response("No file part!", 400)
+
+    if not file or not is_image(filename):
+        return make_response("No image selected!", 400)
+
+    # read image file string data
+    image_data = file.read()
+    image = string_data_to_image(image_data)
+    _, image_with_frame = cv2.imencode(".jpg", add_frame(image))
+
+    return jsonify(image=as_url(as_b64(image_with_frame)))
 
 
 @bp.route("/<name>")
@@ -32,23 +58,24 @@ def download_file(name) -> Response:
 
 @bp.route("/", methods=["GET", "POST"])
 def home_route() -> typing.Union[str, Response]:
-    name = "file"
 
     if request.method == "POST":
+        current_app.logger.info(request.files)
+
         # check if the post request has the file part
-        if name not in request.files:
+        if "file" not in request.files:
             flash("No file part")
             return redirect(request.url)
-        file = request.files[name]
+        file = request.files["file"]
+
         # If the user does not select a file, the browser submits an
         # empty file without a filename.
         filename = file.filename
-        if filename is None or filename == "":
-            flash("No selected file")
+        if not filename:
+            flash("No file selected")
             return redirect(request.url)
 
         if file and is_image(filename):
-            flash("Received file!")
             # read image file string data
             image_data = file.read()
             image = string_data_to_image(image_data)

@@ -1,8 +1,7 @@
-{% extends "layout.html" %}
-{% block body %}
-  <h1>Upload new File</h1>
-  <form method=post enctype=multipart/form-data>
-    <input type=file name=file>
-    <input type=submit value=Upload>
-  </form>
+{% extends "layout.html" %} {% block body %}
+<div>
+  <h2 class="title">InstaFrame!</h2>
+  <p class="subtitle">1:1 your photos for Instagram!</p>
+  {% include "./upload_form.html" %}
+</div>
 {% endblock %}

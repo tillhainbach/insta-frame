@@ -1,11 +1,20 @@
 """Add a frame to any photo so it has format 1:1."""
 
+import base64
 from typing import Tuple
 
 import cv2
 import numpy as np
 
 Image = np.ndarray[Tuple[int, int, int], np.dtype[np.uint8]]
+
+
+def as_b64(image: Image) -> str:
+    return base64.b64encode(image.tobytes()).decode()
+
+
+def as_url(image_b64: str, type: str = "jpeg") -> str:
+    return f"data:image/{type};base64,{image_b64}"
 
 
 def is_image(filename: str) -> bool:
