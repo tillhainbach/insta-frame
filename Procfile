@@ -1,1 +1,1 @@
-web: gunicorn insta_frame.wsgi
+web: hypercorn insta_frame.wsgi
