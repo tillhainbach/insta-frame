@@ -1,4 +1,7 @@
 {
+  "files.associations": {
+    "**/__snapshots__/**/*": "plaintext"
+  },
   "python.formatting.provider": "black",
   "python.linting.enabled": true,
   "python.linting.mypyEnabled": false,
