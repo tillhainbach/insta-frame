@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en" class="js">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <link
+      rel="stylesheet"
+      href="/static/style.css"
+    />
+
+    <title>Insta Frame! 1:1 your photos for Instagram!</title>
+    <script>
+      (function (e, t, n) {
+        var r = e.querySelectorAll("html")[0];
+        r.className = r.className.replace(/(^|\s)no-js(\s|$)/, "$1js$2");
+      })(document, window, 0);
+    </script>
+  </head>
+  <body>
+
+    <div class="m-3">
+<div>
+  <h2 class="title">InstaFrame!</h2>
+  <p class="subtitle">1:1 your photos for Instagram!</p>
+  <div class="container-fluid position-relative rounded shadow text-center">
+  <img
+    src=""
+    class="img-fluid placeholder-img rounded"
+    alt="placeholder-image"
+    id="image"
+  />
+  <form
+    class="box rounded position-absolute top-0 left-0"
+    method="post"
+    action="/%3F"
+    enctype="multipart/form-data"
+    id="drop-area"
+  >
+    <div class="box__input">
+      <svg
+        class="box__icon"
+        width="50"
+        height="50"
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 330 330"
+      >
+        <path
+          d="M154.389,255.602c0.351,0.351,0.719,0.683,1.103,0.998c0.169,0.138,0.347,0.258,0.52,0.388
+		c0.218,0.164,0.432,0.333,0.659,0.484c0.212,0.142,0.432,0.265,0.649,0.395c0.202,0.121,0.4,0.248,0.608,0.359
+		c0.223,0.12,0.453,0.221,0.681,0.328c0.215,0.102,0.427,0.21,0.648,0.301c0.223,0.092,0.45,0.167,0.676,0.247
+		c0.236,0.085,0.468,0.175,0.709,0.248c0.226,0.068,0.456,0.119,0.684,0.176c0.246,0.062,0.489,0.131,0.739,0.181
+		c0.263,0.052,0.529,0.083,0.794,0.121c0.219,0.031,0.435,0.073,0.658,0.095c0.492,0.048,0.986,0.075,1.48,0.075
+		c0.494,0,0.988-0.026,1.479-0.075c0.226-0.022,0.444-0.064,0.667-0.096c0.262-0.037,0.524-0.068,0.784-0.12
+		c0.255-0.05,0.504-0.121,0.754-0.184c0.223-0.057,0.448-0.105,0.669-0.172c0.246-0.075,0.483-0.167,0.724-0.253
+		c0.221-0.08,0.444-0.152,0.662-0.242c0.225-0.093,0.44-0.202,0.659-0.306c0.225-0.106,0.452-0.206,0.672-0.324
+		c0.21-0.112,0.408-0.239,0.611-0.361c0.217-0.13,0.437-0.252,0.648-0.394c0.222-0.148,0.431-0.314,0.644-0.473
+		c0.179-0.134,0.362-0.258,0.536-0.4c0.365-0.3,0.714-0.617,1.049-0.949c0.016-0.016,0.034-0.028,0.049-0.044l70.002-69.998
+		c5.858-5.858,5.858-15.355,0-21.213c-5.857-5.857-15.355-5.858-21.213-0.001l-44.396,44.393V25c0-8.284-6.716-15-15-15
+		c-8.284,0-15,6.716-15,15v183.785l-44.392-44.391c-5.857-5.858-15.355-5.858-21.213,0c-5.858,5.858-5.858,15.355,0,21.213
+		L154.389,255.602z"
+        />
+        <path
+          d="M315,160c-8.284,0-15,6.716-15,15v115H30V175c0-8.284-6.716-15-15-15c-8.284,0-15,6.716-15,15v130
+		c0,8.284,6.716,15,15,15h300c8.284,0,15-6.716,15-15V175C330,166.716,323.284,160,315,160z"
+        />
+      </svg>
+      <input
+        class="box__file"
+        type="file"
+        name="file"
+        id="file"
+        data-multiple-caption="{count} files selected"
+        multiple
+        onchange="onInputChanged(this)"
+        accept="image/*"
+      />
+      <label for="file">
+        <span class="bold">Choose a file</span>
+        <span class="box__dragndrop"> or drag it here</span>.</label
+      >
+      <button class="box__button" type="submit">Upload</button>
+    </div>
+    <div class="box__uploading">Uploading…</div>
+    <div class="box__success">Done!</div>
+    <div class="box__error">Error! <span></span>.</div>
+  </form>
+  <div
+    class="restart-button rounded-circle position-absolute top-0 right-0 shadow"
+  >
+    <a href="/" aria-label="retry" role="button">
+      <svg
+        width="24"
+        height="24"
+        version="1.1"
+        id="Capa_1"
+        xmlns="http://www.w3.org/2000/svg"
+        xmlns:xlink="http://www.w3.org/1999/xlink"
+        x="0px"
+        y="0px"
+        viewBox="0 0 489.533 489.533"
+        style="enable-background: new 0 0 489.533 489.533"
+        xml:space="preserve"
+      >
+        <path
+          d="M268.175,488.161c98.2-11,176.9-89.5,188.1-187.7c14.7-128.4-85.1-237.7-210.2-239.1v-57.6c0-3.2-4-4.9-6.7-2.9
+       l-118.6,87.1c-2,1.5-2,4.4,0,5.9l118.6,87.1c2.7,2,6.7,0.2,6.7-2.9v-57.5c87.9,1.4,158.3,76.2,152.3,165.6
+       c-5.1,76.9-67.8,139.3-144.7,144.2c-81.5,5.2-150.8-53-163.2-130c-2.3-14.3-14.8-24.7-29.2-24.7c-17.9,0-31.9,15.9-29.1,33.6
+       C49.575,418.961,150.875,501.261,268.175,488.161z"
+        />
+      </svg>
+    </a>
+  </div>
+</div>
+<div class="form-text">We don't save your photos!</div>
+<script src="/static/drag-n-drop-vanilla.js"></script>
+</div>
+</div>
+  </body>
+</html>

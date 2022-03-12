@@ -9,12 +9,10 @@ from quart import Quart
 def create_app(test_config: Optional[Mapping[str, Any]] = None) -> Quart:
     app = Quart(__name__, instance_relative_config=True)
 
-    secret_key = os.environ["SECRET_KEY"]
-
-    app.config.from_mapping(SECRET_KEY=secret_key)
-
     if test_config is None:
-        app.config.from_pyfile("config.py", silent=True)
+        secret_key = os.environ["SECRET_KEY"]
+
+        app.config.from_mapping(SECRET_KEY=secret_key)
 
     else:
         app.config.from_mapping(test_config)

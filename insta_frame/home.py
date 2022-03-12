@@ -2,12 +2,11 @@
 
 import typing
 
-import cv2
 from quart import Blueprint, current_app, flash, jsonify, render_template, request
 from quart.wrappers.response import Response
 from werkzeug.datastructures import FileStorage
 
-from insta_frame.lib import add_frame, as_b64, as_url, is_image, string_data_to_image
+from insta_frame.lib import is_image, upload_image_pipe
 
 bp = Blueprint("home", __name__)
 
@@ -15,14 +14,12 @@ bp = Blueprint("home", __name__)
 @bp.route("/?", methods=["POST"])
 async def upload_image() -> Response:
     files: list[FileStorage] = (await request.files).getlist("file")
-    current_app.logger.info(files)
+    current_app.logger.debug(files)
     image_type = filter(lambda x: "image" in x.content_type, files)
+
     try:
         file = next(image_type)
     except StopIteration:
-        file = None
-
-    if not file:
         await flash("Uploaded content is not an image!")
         return jsonify(image=None)
 
@@ -36,11 +33,9 @@ async def upload_image() -> Response:
         return jsonify(image=None)
 
     # read image file string data
-    image_data = file.read()
-    image = string_data_to_image(image_data)
-    _, image_with_frame = cv2.imencode(".jpg", add_frame(image))
+    response_image = upload_image_pipe(file.read())
 
-    return jsonify(image=as_url(as_b64(image_with_frame)))
+    return jsonify(image=response_image)
 
 
 @bp.route("/", methods=["GET"])
