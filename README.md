@@ -14,7 +14,6 @@ Then clone the repo, install the dependencies and start a development server.
 ```sh
 git clone https://github.com/tillhainbach/insta-frame.git
 cd insta-frame
-poetry install
-export QUART_APP="insta_frame:create_app()"
-poetry run quart run
+make bootstrap
+make run
 ```

@@ -38,5 +38,11 @@ test:
 test-cov:
 	./poetry run pytest --cov=insta_frame --cov-report $(report-type)
 
+start:
+	SECRET_KEY='secret' QUART_APP="insta_frame:create_app()" ./poetry run quart run
+
+build:
+	docker build . -t insta-frame
+
 run:
-	QUART_APP="insta_frame:create_app()" ./poetry run quart run
+	docker run --rm --env SECRET_KEY=abc -p 8080:8080 insta-frame

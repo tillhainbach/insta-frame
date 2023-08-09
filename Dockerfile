@@ -1,14 +1,14 @@
 ###############################################
 # Base Image
 ###############################################
-FROM python:3.9.7-slim as python-base
+FROM python:3.10-slim as python-base
 
 ENV PYTHONUNBUFFERED=1 \
   PYTHONDONTWRITEBYTECODE=1 \
   PIP_NO_CACHE_DIR=off \
   PIP_DISABLE_PIP_VERSION_CHECK=on \
   PIP_DEFAULT_TIMEOUT=100 \
-  POETRY_VERSION=1.1.13 \
+  POETRY_VERSION=1.5.1 \
   POETRY_HOME="/opt/poetry" \
   POETRY_VIRTUALENVS_IN_PROJECT=true \
   POETRY_NO_INTERACTION=1 \
@@ -30,6 +30,8 @@ RUN curl -sSL https://install.python-poetry.org | python3 -
 # copy project requirement files here to ensure they will be cached.
 WORKDIR $PYSETUP_PATH
 COPY poetry.lock pyproject.toml ./
+COPY insta_frame ./insta_frame
+COPY README.md ./README.md
 
 # install runtime deps - uses $POETRY_VIRTUALENVS_IN_PROJECT internally
 RUN poetry install --no-dev
@@ -40,4 +42,4 @@ RUN poetry install --no-dev
 FROM python-base as production
 COPY --from=builder-base $PYSETUP_PATH $PYSETUP_PATH
 
-CMD ["poetry", "run", "python", "insta_frame/app.py"]
+CMD ["hypercorn", "-b", "0.0.0.0:8080","insta_frame.wsgi"]

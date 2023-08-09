@@ -40,7 +40,7 @@ def pipe(
     ...
 
 
-def pipe(*_funcs: Callable) -> Callable:
+def pipe(*_funcs):  # pyright: ignore
     def _pipe(value):
         for func in _funcs:
             value = func(value)
@@ -50,7 +50,7 @@ def pipe(*_funcs: Callable) -> Callable:
 
 
 def jpegify(image: Image) -> Image:
-    return cv2.imencode(".jpg", image)[1]
+    return cv2.imencode(".jpg", image)[1]  # pyright: ignore
 
 
 def as_b64(image: bytes) -> str:
