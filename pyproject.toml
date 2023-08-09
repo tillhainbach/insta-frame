@@ -2,10 +2,10 @@
 name = "insta-frame"
 version = "0.1.0"
 description = "add 1-1-frame to any photo size"
-authors = ["Till Hainbach <Till.Hainbach@posteo.de>"]
+authors = ["Till Hainbach <till@deepfrozenstudios.de>"]
 license = "MIT"
 readme = "README.md"
-packages = [{include = "insta_frame"}]
+packages = [{ include = "insta_frame" }]
 
 [tool.poetry.dependencies]
 python = "^3.10"
@@ -13,9 +13,9 @@ opencv-python-headless = "^4.5.5"
 quart = "^0.16.3"
 
 
-[tool.poetry.dev-dependencies]
+[tool.poetry.group.dev.dependencies]
+black = { extras = ["jupyter"], version = "^23.7.0" }
 flake8 = "^4.0.1"
-black = "^22.1.0"
 isort = "^5.10.1"
 pre-commit = "^2.17.0"
 pytest = "^7.0.1"
@@ -27,8 +27,8 @@ syrupy = "^1.7.4"
 pytest-cov = "^3.0.0"
 
 [tool.pytest.ini_options]
-asyncio_mode="auto"
-log_level="NOTSET"
+asyncio_mode = "auto"
+log_level = "NOTSET"
 
 [tool.coverage.run]
 omit = ["*wsgi.py"]

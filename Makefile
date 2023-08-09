@@ -1,17 +1,18 @@
-.PHONY: check-porcelain deploy lint show-coverage-report sync-requirements test
+.PHONY: check-porcelain deploy lint show-coverage-report test
 
-POETRY_VERSION=1.1
+POETRY_VERSION=1.5.1
 
 bootstrap: shim-poetry
 	./poetry config virtualenvs.in-project true
 	./poetry install
+	./poetry run pre-commit install
 
 check-porcelain:
 ifneq ($(shell git status --porcelain),)
 	$(error "Working tree dirty!")
 endif
 
-deploy: check-porcelain sync-requirements
+deploy: check-porcelain
 	git push heroku main
 
 lint:
@@ -31,16 +32,11 @@ shim-poetry: require-poetry
 show-coverage-report:
 	open htmlcov/index.html
 
-sync-requirements:
-	echo "# This is generated automatically. Do not change!\n$$(./poetry export)" > requirements.txt
-ifeq ($(findstring requirements.txt,$(shell git status --porcelain)), requirements.txt)
-	@echo "Committing requirements.txt..."
-	git add requirements.txt
-	git commit -m "chore(web-app): sync requirements.txt with poetry" --no-verify
-endif
-
 test:
 	./poetry run pytest $(extra-args)
 
 test-cov:
 	./poetry run pytest --cov=insta_frame --cov-report $(report-type)
+
+run:
+	QUART_APP="insta_frame:create_app()" ./poetry run quart run
